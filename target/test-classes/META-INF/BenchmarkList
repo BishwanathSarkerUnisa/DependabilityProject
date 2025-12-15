@@ -1,0 +1,1 @@
+JMH S 27 org.example.BenchmarkRunner S 74 org.example.jmh_generated.BenchmarkRunner_measureSalaryCalculation_jmhTest S 24 measureSalaryCalculation S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E E U 11 NANOSECONDS E E 

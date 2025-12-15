@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - School System</title>
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; }
+        .sidebar { height: 100vh; background: #2c3e50; color: white; position: fixed; width: 250px; padding-top: 20px; }
+        .sidebar a { color: #bdc3c7; text-decoration: none; display: block; padding: 15px 25px; }
+        .sidebar a:hover, .sidebar a.active { background: #34495e; color: white; border-left: 4px solid #3498db; }
+        .content { margin-left: 250px; padding: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h4 class="text-center mb-4"><i class="fa-solid fa-school me-2"></i>EduSys</h4>
+    <a href="index.html"><i class="fa-solid fa-chart-line me-2"></i> Dashboard</a>
+    <a href="students.html" class="active"><i class="fa-solid fa-user-graduate me-2"></i> Students</a>
+    <a href="teachers.html"><i class="fa-solid fa-chalkboard-user me-2"></i> Teachers</a>
+</div>
+
+<div class="content">
+    <h2 class="mb-4">Student Management</h2>
+
+    <div class="row">
+        <!-- Add Form -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">Add New Student</div>
+                <div class="card-body">
+                    <form onsubmit="addStudent(event)">
+                        <div class="mb-3"><label>Student ID</label><input type="text" id="sId" class="form-control" required></div>
+                        <div class="mb-3"><label>First Name</label><input type="text" id="sFirst" class="form-control" required></div>
+                        <div class="mb-3"><label>Last Name</label><input type="text" id="sLast" class="form-control" required></div>
+                        <div class="mb-3"><label>Year</label><input type="number" id="sYear" class="form-control" value="2025" required></div>
+                        <div class="mb-3"><label>Program</label><input type="text" id="sProg" class="form-control" placeholder="CSE" required></div>
+                        <button type="submit" class="btn btn-primary w-100">Admit Student</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- List -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Enrolled Students</h5>
+                        <button onclick="loadStudents()" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-sync"></i> Refresh</button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                        <tr><th>ID</th><th>Name</th><th>Year</th><th>Program</th></tr>
+                        </thead>
+                        <tbody id="studentTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function addStudent(e) {
+        e.preventDefault();
+        const data = {
+            id: document.getElementById('sId').value,
+            firstName: document.getElementById('sFirst').value,
+            lastName: document.getElementById('sLast').value,
+            year: document.getElementById('sYear').value,
+            programme: document.getElementById('sProg').value
+        };
+        await fetch('/api/student', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        e.target.reset();
+        loadStudents();
+    }
+
+    async function loadStudents() {
+        const res = await fetch('/api/students');
+        const students = await res.json();
+        const rows = students.map(s => `
+            <tr>
+                <td><span class="badge bg-secondary">${s.id}</span></td>
+                <td>${s.firstName} ${s.lastName}</td>
+                <td>${s.year}</td>
+                <td><span class="badge bg-info text-dark">${s.programme}</span></td>
+            </tr>
+        `).join('');
+        document.getElementById('studentTable').innerHTML = rows;
+    }
+    loadStudents();
+</script>
+</body>
+</html>

@@ -3,252 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dependability School System</title>
+    <title>School Management System - Dashboard</title>
+    <!-- Bootstrap CSS for modern styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #0f172a; --accent: #3b82f6; --light: #f1f5f9; --success: #22c55e; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: var(--light); color: #333; }
+    <!-- Google Fonts for Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* Authentic Header with Image */
-        .hero {
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)),
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --light-bg: #ecf0f1;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            height: 100vh;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            width: 260px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand h4 {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            transition: 0.3s;
+            font-size: 0.95rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            color: white;
+            background-color: rgba(255,255,255,0.05);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .sidebar-menu i {
+            width: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Content Area Styling */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero-banner {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.9)),
             url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            color: white; padding: 3rem 2rem;
-            display: flex; align-items: center; justify-content: space-between;
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
-        .hero h1 { margin: 0; font-size: 2rem; display: flex; align-items: center; gap: 1rem; }
-        .hero p { margin: 0.5rem 0 0 0; opacity: 0.8; }
-        .badge { background: var(--accent); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
 
-        /* Dashboard Grid */
-        .container { max-width: 1200px; margin: -2rem auto 2rem; padding: 0 1rem; position: relative; z-index: 10; }
+        .hero-banner h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
         /* Stats Cards */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 1rem; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
-        .bg-blue { background: var(--accent); }
-        .bg-green { background: var(--success); }
-        .bg-purple { background: #8b5cf6; }
-        .stat-info h3 { margin: 0; font-size: 2rem; }
-        .stat-info p { margin: 0; color: #64748b; font-size: 0.9rem; }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            border-bottom: 4px solid transparent;
+        }
 
-        /* Main Content */
-        .main-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
-        .card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-        h2 { margin-top: 0; color: var(--primary); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
 
-        /* Forms & Inputs */
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-        input { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 6px; box-sizing: border-box; }
-        button { background-color: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; width: 100%; font-weight: 600; }
-        button:hover { background-color: #1e293b; }
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-outline:hover { background: var(--light); }
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
 
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        th { text-align: left; padding: 1rem; background: #f8fafc; color: #64748b; font-weight: 600; }
-        td { padding: 1rem; border-bottom: 1px solid #f1f5f9; }
+        .border-blue { border-bottom-color: #3498db; }
+        .bg-blue-gradient { background: linear-gradient(135deg, #3498db, #2980b9); }
 
-        /* Search Result Box */
-        #searchResult { background: #f8fafc; padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; border-left: 4px solid var(--accent); }
+        .border-green { border-bottom-color: #2ecc71; }
+        .bg-green-gradient { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 
-        /* Toast */
-        #status { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 1rem 2rem; border-radius: 8px; display: none; animation: slideIn 0.3s; z-index: 100; }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .border-purple { border-bottom-color: #9b59b6; }
+        .bg-purple-gradient { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+
+        .stat-info h2 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* System Status Card */
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            padding: 20px 25px;
+        }
+
+        .status-item {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .status-item:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <div>
-        <h1><i class="fa-solid fa-graduation-cap"></i> Dependability Academy</h1>
-        <p>Managed via Secure Spring Boot API</p>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <h4><i class="fa-solid fa-graduation-cap me-2"></i>SchoolSys</h4>
     </div>
-    <div class="badge">
-        <i class="fa-solid fa-shield-halved"></i> JML Verified
+    <div class="sidebar-menu">
+        <a href="index.html" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="students.html"><i class="fa-solid fa-user-graduate"></i> Students</a>
+        <a href="teachers.html"><i class="fa-solid fa-chalkboard-user"></i> Teachers</a>
     </div>
 </div>
 
-<div class="container">
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon bg-blue"><i class="fa-solid fa-user-graduate"></i></div>
-            <div class="stat-info">
-                <h3 id="statStudents">0</h3>
-                <p>Total Students</p>
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Hero Banner -->
+    <div class="hero-banner animate-fade-in">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5">Welcome to <span class="text-warning">School Management System</span></h1>
+                <p class="lead mb-0 text-white-50">Secure, Reliable, and Verified Educational Administration.</p>
             </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon bg-green"><i class="fa-solid fa-chalkboard-user"></i></div>
-            <div class="stat-info">
-                <h3 id="statTeachers">0</h3>
-                <p>Faculty Members</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon bg-purple"><i class="fa-solid fa-money-bill-wave"></i></div>
-            <div class="stat-info">
-                <h3 id="statPayroll">$0</h3>
-                <p>Monthly Payroll</p>
+            <div class="col-lg-4 text-end d-none d-lg-block">
+                <span class="badge bg-success p-2 rounded-pill"><i class="fa-solid fa-shield-halved me-2"></i>System Secure</span>
             </div>
         </div>
     </div>
 
-    <div class="main-grid">
-        <div class="left-col">
-            <div class="card">
-                <h2><i class="fa-solid fa-magnifying-glass"></i> Search Database</h2>
-                <div class="form-group">
-                    <input type="text" id="searchId" placeholder="Enter ID (e.g. T1, S1)">
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <!-- Students Card -->
+        <div class="col-md-4 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="stat-card border-blue">
+                <div class="stat-info">
+                    <h2 id="statStudents">...</h2>
+                    <p>Total Students</p>
                 </div>
-                <button onclick="searchId()" class="btn-outline">Find Record</button>
-                <div id="searchResult"></div>
-            </div>
-
-            <div class="card">
-                <h2><i class="fa-solid fa-plus"></i> Admit Student</h2>
-                <form onsubmit="addStudent(event)">
-                    <div class="form-group"><input type="text" id="sId" placeholder="ID (e.g. S1)" required></div>
-                    <div class="form-group"><input type="text" id="sFirst" placeholder="First Name" required></div>
-                    <div class="form-group"><input type="text" id="sLast" placeholder="Last Name" required></div>
-                    <div class="form-group"><input type="number" id="sYear" placeholder="Year (2025)" required></div>
-                    <div class="form-group"><input type="text" id="sProg" placeholder="Program (CSE)" required></div>
-                    <button type="submit">Submit Record</button>
-                </form>
-            </div>
-
-            <div class="card">
-                <h2><i class="fa-solid fa-briefcase"></i> Hire Teacher</h2>
-                <form onsubmit="addTeacher(event)">
-                    <div class="form-group"><input type="text" id="tId" placeholder="ID (e.g. T1)" required></div>
-                    <div class="form-group"><input type="text" id="tName" placeholder="Full Name" required></div>
-                    <div class="form-group"><input type="text" id="tDept" placeholder="Department" required></div>
-                    <div class="form-group"><input type="number" id="tCourses" placeholder="Courses Assigned" required></div>
-                    <button type="submit">Submit Record</button>
-                </form>
+                <div class="stat-icon bg-blue-gradient shadow">
+                    <i class="fa-solid fa-users"></i>
+                </div>
             </div>
         </div>
 
-        <div class="right-col">
-            <div class="card">
-                <h2><i class="fa-solid fa-list"></i> Academic Directory</h2>
-                <table>
-                    <thead><tr><th>ID</th><th>Name</th><th>Details</th></tr></thead>
-                    <tbody id="mainTable"></tbody>
-                </table>
+        <!-- Faculty Card -->
+        <div class="col-md-4 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="stat-card border-green">
+                <div class="stat-info">
+                    <h2 id="statTeachers">...</h2>
+                    <p>Active Faculty</p>
+                </div>
+                <div class="stat-icon bg-green-gradient shadow">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payroll Card -->
+        <div class="col-md-4 animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="stat-card border-purple">
+                <div class="stat-info">
+                    <h2 id="statPayroll">...</h2>
+                    <p>Monthly Payroll</p>
+                </div>
+                <div class="stat-icon bg-purple-gradient shadow">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Health & Info -->
+    <div class="row animate-fade-in" style="animation-delay: 0.4s;">
+        <div class="col-12">
+            <div class="status-card">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-server me-2 text-primary"></i>System Diagnostics</h5>
+                    <span class="badge bg-light text-dark border"><i class="fa-solid fa-clock me-1"></i> Live Status</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="status-item d-flex align-items-center">
+                                <div class="me-3 text-success"><i class="fa-solid fa-signal fa-2x"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">API Status</h6>
+                                    <small class="text-muted">Online (Spring Boot 3.2.0)</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="status-item d-flex align-items-center">
+                                <div class="me-3 text-primary"><i class="fa-solid fa-file-code fa-2x"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Logic Verification</h6>
+                                    <small class="text-muted">JML Constraints Active</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="status-item d-flex align-items-center">
+                                <div class="me-3 text-info"><i class="fa-solid fa-database fa-2x"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Data Storage</h6>
+                                    <small class="text-muted">High-Performance In-Memory</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="status">Operation Successful</div>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const API_URL = '/api';
-
-    // --- Search Functionality (New) ---
-    async function searchId() {
-        const id = document.getElementById('searchId').value;
-        const box = document.getElementById('searchResult');
-        if(!id) return;
-
-        // Try finding as student
-        let res = await fetch(`${API_URL}/student/${id}`);
-        if(res.ok && (await res.clone().text())) {
-            const s = await res.json();
-            box.style.display = 'block';
-            box.innerHTML = `<strong>Student Found:</strong><br>${s.firstName} ${s.lastName} (${s.programme})`;
-            return;
-        }
-
-        // Try finding as teacher
-        res = await fetch(`${API_URL}/teacher/${id}/salary`);
-        if(res.ok) {
-            const salary = await res.json();
-            box.style.display = 'block';
-            box.innerHTML = `<strong>Teacher Found:</strong><br>Salary Payout: $${salary.toLocaleString()}`;
-            return;
-        }
-
-        box.style.display = 'block';
-        box.innerHTML = `<span style="color:red">ID not found in system.</span>`;
+    // Animation for numbers
+    function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                // Ensure correct formatting for currency if needed
+                if(obj.id === 'statPayroll') {
+                    obj.innerHTML = "$" + end.toLocaleString();
+                } else {
+                    obj.innerHTML = end.toLocaleString();
+                }
+            }
+        };
+        window.requestAnimationFrame(step);
     }
 
-    // --- Core Actions ---
-    async function addStudent(e) {
-        e.preventDefault();
-        await postData(`${API_URL}/student`, {
-            id: document.getElementById('sId').value,
-            firstName: document.getElementById('sFirst').value,
-            lastName: document.getElementById('sLast').value,
-            year: document.getElementById('sYear').value,
-            programme: document.getElementById('sProg').value
-        });
-        refreshAll();
-    }
-
-    async function addTeacher(e) {
-        e.preventDefault();
-        await postData(`${API_URL}/teacher`, {
-            id: document.getElementById('tId').value,
-            name: document.getElementById('tName').value,
-            department: document.getElementById('tDept').value,
-            courseCount: document.getElementById('tCourses').value
-        });
-        refreshAll();
-    }
-
-    // --- Data Loading & Stats ---
-    async function refreshAll() {
-        // Load Students
-        const sRes = await fetch(`${API_URL}/students`);
-        const students = await sRes.json();
-
-        // Load Teachers
-        const tRes = await fetch(`${API_URL}/teachers`);
-        const teachers = await tRes.json();
-
-        // Calculate Totals
-        document.getElementById('statStudents').textContent = students.length;
-        document.getElementById('statTeachers').textContent = teachers.length;
-
-        // Calculate Payroll
-        let totalPayroll = 0;
-        const rows = [];
-
-        // Combine lists for the main table
-        students.forEach(s => rows.push(`<tr><td><span style="color:var(--accent)">${s.id}</span></td><td>${s.firstName} ${s.lastName}</td><td>Student (${s.programme})</td></tr>`));
-
-        for (const t of teachers) {
-            const salRes = await fetch(`${API_URL}/teacher/${t.id}/salary`);
-            const salary = await salRes.json();
-            totalPayroll += salary;
-            rows.push(`<tr><td><span style="color:var(--success)">${t.id}</span></td><td>${t.name}</td><td>Faculty ($${salary.toLocaleString()})</td></tr>`);
-        }
-
-        document.getElementById('statPayroll').textContent = '$' + totalPayroll.toLocaleString();
-        document.getElementById('mainTable').innerHTML = rows.join('');
-    }
-
-    async function postData(url, data) {
+    async function loadStats() {
         try {
-            const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-            showStatus(await res.text());
-        } catch(e) { showStatus("Error"); }
+            // 1. Fetch Students count
+            const sRes = await fetch('/api/students');
+            const students = await sRes.json();
+            const studentCount = students.length;
+            animateValue(document.getElementById('statStudents'), 0, studentCount, 1000);
+
+            // 2. Fetch Teachers count
+            const tRes = await fetch('/api/teachers');
+            const teachers = await tRes.json();
+            const teacherCount = teachers.length;
+            animateValue(document.getElementById('statTeachers'), 0, teacherCount, 1000);
+
+            // 3. Calculate Payroll
+            let totalSalary = 0;
+            // We use Promise.all to fetch all salaries quickly in parallel
+            const salaryPromises = teachers.map(t => fetch(`/api/teacher/${t.id}/salary`).then(r => r.json()));
+            const salaries = await Promise.all(salaryPromises);
+
+            totalSalary = salaries.reduce((acc, curr) => acc + curr, 0);
+
+            // Custom animation for currency
+            const payrollObj = document.getElementById('statPayroll');
+            // Slight delay for visual effect
+            setTimeout(() => {
+                payrollObj.innerHTML = "$" + totalSalary.toLocaleString();
+            }, 500);
+
+        } catch (error) {
+            console.error("Error loading stats:", error);
+            document.getElementById('statStudents').innerHTML = "-";
+            document.getElementById('statTeachers').innerHTML = "-";
+            document.getElementById('statPayroll').innerHTML = "-";
+        }
     }
 
-    function showStatus(msg) {
-        const el = document.getElementById('status');
-        el.innerText = msg; el.style.display = 'block';
-        setTimeout(() => el.style.display = 'none', 3000);
-    }
-
-    refreshAll();
+    // Load data when page loads
+    document.addEventListener('DOMContentLoaded', loadStats);
 </script>
 </body>
 </html>

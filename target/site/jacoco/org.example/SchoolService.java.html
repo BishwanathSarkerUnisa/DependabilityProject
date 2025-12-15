@@ -6,42 +6,43 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-<span class="fc" id="L9">public class SchoolService {</span>
+<span class="nc" id="L9">public class SchoolService {</span>
 
-<span class="fc" id="L11">    private HashMap&lt;String, Student&gt; students = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L12">    private HashMap&lt;String, Teacher&gt; teachers = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L11">    private HashMap&lt;String, Student&gt; students = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L12">    private HashMap&lt;String, Teacher&gt; teachers = new HashMap&lt;&gt;();</span>
 
     // --- Student Logic ---
     public String addStudent(Student s) {
-<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (s.getId() == null) return &quot;Error: ID cannot be null&quot;;</span>
-<span class="fc" id="L17">        students.put(s.getId(), s);</span>
-<span class="fc" id="L18">        return &quot;Student added: &quot; + s.getFirstName();</span>
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        if (s.getId() == null) return &quot;Error: ID cannot be null&quot;;</span>
+<span class="nc" id="L17">        students.put(s.getId(), s);</span>
+        // SECURITY FIX: Return a safe, static message. Do not print the name.
+<span class="nc" id="L19">        return &quot;Student added successfully&quot;;</span>
     }
 
     public List&lt;Student&gt; getAllStudents() {
-<span class="fc" id="L22">        return new ArrayList&lt;&gt;(students.values());</span>
+<span class="nc" id="L23">        return new ArrayList&lt;&gt;(students.values());</span>
     }
 
     public Student getStudentById(String id) {
-<span class="fc" id="L26">        return students.get(id);</span>
+<span class="nc" id="L27">        return students.get(id);</span>
     }
 
     // --- Teacher Logic ---
     public String addTeacher(Teacher t) {
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (t.getId() == null) return &quot;Error: ID cannot be null&quot;;</span>
-<span class="fc" id="L32">        teachers.put(t.getId(), t);</span>
-<span class="fc" id="L33">        return &quot;Teacher added: &quot; + t.getName();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (t.getId() == null) return &quot;Error: ID cannot be null&quot;;</span>
+<span class="nc" id="L33">        teachers.put(t.getId(), t);</span>
+        // SECURITY FIX: Return a safe, static message.
+<span class="nc" id="L35">        return &quot;Teacher added successfully&quot;;</span>
     }
 
     public List&lt;Teacher&gt; getAllTeachers() {
-<span class="fc" id="L37">        return new ArrayList&lt;&gt;(teachers.values());</span>
+<span class="nc" id="L39">        return new ArrayList&lt;&gt;(teachers.values());</span>
     }
 
     public int getTeacherSalary(String id) {
-<span class="fc" id="L41">        Teacher t = teachers.get(id);</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (t == null) return 0;</span>
-        // Uses the JML-verified method
-<span class="fc" id="L44">        return t.calculateSalary(t.getCourseCount());</span>
+<span class="nc" id="L43">        Teacher t = teachers.get(id);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (t == null) return 0;</span>
+<span class="nc" id="L45">        return t.calculateSalary(t.getCourseCount());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

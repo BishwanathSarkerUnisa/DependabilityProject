@@ -15,7 +15,8 @@ public class SchoolService {
     public String addStudent(Student s) {
         if (s.getId() == null) return "Error: ID cannot be null";
         students.put(s.getId(), s);
-        return "Student added: " + s.getFirstName();
+        // SECURITY FIX: Return a safe, static message. Do not print the name.
+        return "Student added successfully";
     }
 
     public List<Student> getAllStudents() {
@@ -30,7 +31,8 @@ public class SchoolService {
     public String addTeacher(Teacher t) {
         if (t.getId() == null) return "Error: ID cannot be null";
         teachers.put(t.getId(), t);
-        return "Teacher added: " + t.getName();
+        // SECURITY FIX: Return a safe, static message.
+        return "Teacher added successfully";
     }
 
     public List<Teacher> getAllTeachers() {
@@ -40,7 +42,6 @@ public class SchoolService {
     public int getTeacherSalary(String id) {
         Teacher t = teachers.get(id);
         if (t == null) return 0;
-        // Uses the JML-verified method
         return t.calculateSalary(t.getCourseCount());
     }
 }

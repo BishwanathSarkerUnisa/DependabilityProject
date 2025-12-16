@@ -7,57 +7,82 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
+import java.util.Collections;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SchoolController.class)
 class SchoolControllerTest {
 
     @Autowired
-    private MockMvc mockMvc; // This is the "Fake Browser"
+    private MockMvc mockMvc;
 
     @MockBean
-    private SchoolService service; // We mock the logic so we only test the "Web" part
+    private SchoolService service;
 
     @Test
-    void testAddStudentEndpoint() throws Exception {
-        // 1. Pretend the service works perfectly
-        given(service.addStudent(any(Student.class))).willReturn("Student added: Test");
+    void testAddStudent() throws Exception {
+        given(service.addStudent(any(Student.class))).willReturn("Student added successfully");
 
-        // 2. Send a fake POST request
         mockMvc.perform(post("/api/student")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"S1\", \"firstName\":\"John\", \"lastName\":\"Doe\", \"year\":2023, \"programme\":\"CSE\"}"))
-                .andExpect(status().isOk()) // Expect HTTP 200 OK
-                .andExpect(content().string("Student added: Test"));
+                .andExpect(status().isOk())
+                .andExpect(content().string("Student added successfully"));
     }
 
     @Test
-    void testGetStudentsEndpoint() throws Exception {
-        // 1. Pretend the service has data
+    void testGetAllStudents() throws Exception {
         Student s = new Student("S1", "John", "Doe", 2023, "CSE");
-        given(service.getAllStudents()).willReturn(Arrays.asList(s));
+        given(service.getAllStudents()).willReturn(Collections.singletonList(s));
 
-        // 2. Send a fake GET request
         mockMvc.perform(get("/api/students"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'id':'S1'}]"));
     }
 
     @Test
-    void testAddTeacherEndpoint() throws Exception {
-        given(service.addTeacher(any(Teacher.class))).willReturn("Teacher added: Snape");
+    void testGetStudentById() throws Exception {
+        Student s = new Student("S1", "John", "Doe", 2023, "CSE");
+        given(service.getStudentById("S1")).willReturn(s);
+
+        mockMvc.perform(get("/api/student/S1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'id':'S1'}"));
+    }
+
+    @Test
+    void testAddTeacher() throws Exception {
+        given(service.addTeacher(any(Teacher.class))).willReturn("Teacher added successfully");
 
         mockMvc.perform(post("/api/teacher")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"T1\", \"name\":\"Snape\", \"department\":\"Potions\", \"courseCount\":5}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Teacher added: Snape"));
+                .andExpect(content().string("Teacher added successfully"));
+    }
+
+    @Test
+    void testGetAllTeachers() throws Exception {
+        Teacher t = new Teacher("T1", "Snape", "Potions", 5);
+        given(service.getAllTeachers()).willReturn(Collections.singletonList(t));
+
+        mockMvc.perform(get("/api/teachers"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'id':'T1'}]"));
+    }
+
+    @Test
+    void testGetTeacherSalary() throws Exception {
+        given(service.getTeacherSalary("T1")).willReturn(75000);
+
+        mockMvc.perform(get("/api/teacher/T1/salary"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("75000"));
     }
 }

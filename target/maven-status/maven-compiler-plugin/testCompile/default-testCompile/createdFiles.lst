@@ -4,6 +4,7 @@ org\example\BenchmarkRunner.class
 org\example\jmh_generated\BenchmarkRunner_jmhType_B2.class
 META-INF\BenchmarkList
 org\example\jmh_generated\BenchmarkRunner_measureSalaryCalculation_jmhTest.class
+org\example\ApplicationTest.class
 org\example\SchoolTest.class
 META-INF\CompilerHints
 org\example\SchoolControllerTest.class

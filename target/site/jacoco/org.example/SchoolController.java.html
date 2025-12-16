@@ -26,7 +26,7 @@ public class SchoolController {
 
     @GetMapping(&quot;/student/{id}&quot;)
     public Student getStudent(@PathVariable String id) {
-<span class="nc" id="L29">        return service.getStudentById(id);</span>
+<span class="fc" id="L29">        return service.getStudentById(id);</span>
     }
 
     // --- Teacher Endpoints ---
@@ -37,12 +37,12 @@ public class SchoolController {
 
     @GetMapping(&quot;/teachers&quot;)
     public List&lt;Teacher&gt; getAllTeachers() {
-<span class="nc" id="L40">        return service.getAllTeachers();</span>
+<span class="fc" id="L40">        return service.getAllTeachers();</span>
     }
 
     @GetMapping(&quot;/teacher/{id}/salary&quot;)
     public int getTeacherSalary(@PathVariable String id) {
-<span class="nc" id="L45">        return service.getTeacherSalary(id);</span>
+<span class="fc" id="L45">        return service.getTeacherSalary(id);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

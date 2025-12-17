@@ -2,7 +2,7 @@
 
 This project is a high-reliability Spring Boot Web Application designed to demonstrate formal verification, automated testing, and secure CI/CD pipelines.
 
-**Author:** Bishwanath Sarker
+**Author:** Bishwanath Sarker and Muhammad Taha
 **DockerHub Image:** `bishwanasth/school-app`
 
 ## 📊 Project Status (Dependability Criteria)

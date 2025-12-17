@@ -20,9 +20,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 3. GitGuardian Security Scan (FIXED: Pinned to specific Commit SHA)
+      # 3. GitGuardian Security Scan
       - name: GitGuardian Security Scan
-        # Replaces @master with the specific commit ID for v1.45.0
+
         uses: GitGuardian/ggshield-action@427861a5523bded845b977f15c9e72ed24d312a4
         env:
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
@@ -31,9 +31,8 @@ jobs:
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
 
-      # 4. Snyk Security Scan (FIXED: Pinned to specific Commit SHA)
+      # 4. Snyk Security Scan
       - name: Snyk Security Scan
-        # Replaces @master with the specific commit ID
         uses: snyk/actions/maven@9adf32b1121593767fc3c057af55b55db032dc04
         continue-on-error: true
         env:

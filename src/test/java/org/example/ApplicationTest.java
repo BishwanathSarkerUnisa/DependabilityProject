@@ -15,14 +15,13 @@ class ApplicationTest {
 
     @Test
     void contextLoads() {
-        // FIX: Assert that the context is actually created and not null
+        //  Assert that the context is actually created and not null
         assertThat(context).isNotNull();
     }
 
     @Test
     void testMain() {
-        // FIX: Use assertDoesNotThrow to confirm main() runs without crashing
-        // This satisfies SonarQube's requirement for an assertion
+        //  Use assertDoesNotThrow to confirm main() runs without crashing
         org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
             DependabilityProjectApplication.main(new String[]{});
         });

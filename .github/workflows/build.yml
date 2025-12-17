@@ -23,7 +23,7 @@ jobs:
       # 3. GitGuardian Security Scan (FIXED: Pinned to specific Commit SHA)
       - name: GitGuardian Security Scan
         # Replaces @master with the specific commit ID for v1.45.0
-        uses: GitGuardian/ggshield-action@427861a
+        uses: GitGuardian/ggshield-action@427861a5523bded845b977f15c9e72ed24d312a4
         env:
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
@@ -34,7 +34,7 @@ jobs:
       # 4. Snyk Security Scan (FIXED: Pinned to specific Commit SHA)
       - name: Snyk Security Scan
         # Replaces @master with the specific commit ID
-        uses: snyk/actions/maven@9adf32b
+        uses: snyk/actions/maven@9adf32b1121593767fc3c057af55b55db032dc04
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
